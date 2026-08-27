@@ -1,96 +1,1388 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-    <title>Vercel HTML Starter</title>
-    <meta
-      name="description"
-      content="High-performance HTML based website template."
-    />
-  </head>
-  <body>
-    <h1>Vercel HTML Starter</h1>
-    <p>
-      This template is a simple, but powerful single
-      <code>index.html</code> file deployed to
-      <a href="https://vercel.com">Vercel</a>. When your site is deployed, all
-      static assets (like HTML, JavaScript, CSS, images, and more) are deployed
-      globally to every
-      <a href="https://vercel.com/docs/concepts/edge-network/overview"
-        >Vercel Edge Network</a
-      >
-      region.
-    </p>
-    <h2>Simple, privacy-friendly analytics</h2>
-    <p>
-      Want to understand your visitor traffic? Vercel Analytics gives you
-      first-party, privacy-friendly traffic analytics for your HTML site. This
-      template is already configured using the following script:
-    </p>
-    <pre><code>&lt;script defer src="/_vercel/insights/script.js"&gt;&lt;/script&gt;</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/analytics">Vercel Analytics</a>.
-    </p>
-    <h2>Integrated with git</h2>
-    <p>
-      Deploying updates to your site is as simple as
-      <code>git push</code> thanks to Vercel's advanced
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-      Support for GitHub, GitLab, Bitbucket is zero-configuration, and with the
-      flexible Vercel CLI and API, you can integrate with any tool possible.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-    </p>
-    <h2>Fast <code>gzip</code> compression</h2>
-    <p>
-      To help ensure the smallest possible file sizes for your static assets,
-      the Vercel Edge Network compresses files by default using
-      <code>gzip</code>. You can also optionally use
-      <code>brotli</code> compressesion if you prefer.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/edge-network/compression"
-        >compression</a
-      >.
-    </p>
-    <h2>Advanced routing configuration</h2>
-    <p>
-      Vercel gives you a variety of ways to configure the routing of your
-      website. For example, adding redirects, rewrites, or headers to your page.
-      While you can use <code>vercel.json</code> to define these through JSON,
-      you can also express your routing configuration as code using
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-    <p>
-      Middleware runs before the
-      <a href="https://vercel.com/docs/concepts/edge-network/caching"
-        >Vercel Edge Network Cache</a
-      >, so you can configure routing exactly as your application needs. For
-      example, this template uses <code>middleware.js</code> defined in the root
-      of the repository to add additional security headers to the site:
-    </p>
-    <pre><code>referrer-policy: origin-when-cross-origin
-strict-transport-security: max-age=31536000; includeSubDomains; preload
-x-content-type-options: nosniff
-x-dns-prefetch-control: on
-x-frame-options: DENY</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Saline Sense | 3D IoT Healthcare Platform</title>
+  
+  <!-- External Fonts & Syntax Highlighting -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Three.js CDN for 3D Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #03060d;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.4);
+      --accent: #818cf8;
+      --danger: #f87171;
+      --danger-glow: rgba(248, 113, 113, 0.4);
+      --success: #34d399;
+      --glass-bg: rgba(12, 19, 36, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-hover-border: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* Fixed WebGL Canvas Behind Content */
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Container */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      padding-top: calc(1.5rem + env(safe-area-inset-top));
+      padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    }
+
+    /* Glass Panels */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      margin-bottom: 1.25rem;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .glass-panel:hover {
+      border-color: var(--glass-hover-border);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px var(--primary-glow);
+    }
+
+    .panel-inner {
+      padding: 1.5rem;
+      transform: translateZ(10px);
+    }
+
+    /* Hero */
+    .hero-panel {
+      text-align: center;
+      padding: 2.25rem 1.25rem 1.75rem 1.25rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto 1.75rem auto;
+      line-height: 1.5;
+    }
+
+    /* Creators Grid */
+    .creators-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      text-align: left;
+    }
+
+    .creator-card {
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 1.1rem;
+    }
+
+    .creator-card h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .creator-card p {
+      font-size: 0.88rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .creator-card .meta {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-title i {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+    /* --- SIMULATION SECTION STYLES --- */
+    .sim-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .sim-stage {
+      position: relative;
+      background: rgba(2, 6, 23, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 380px;
+      overflow: hidden;
+    }
+
+    /* Visual Bottle Component */
+    .bottle-wrapper {
+      position: relative;
+      width: 140px;
+      height: 240px;
+      margin-top: 25px;
+    }
+
+    .ultrasonic-sensor {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 24px;
+      background: #1e293b;
+      border: 1px solid #38bdf8;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 4px;
+      z-index: 3;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .sensor-eye {
+      width: 16px;
+      height: 16px;
+      background: #0f172a;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .sensor-eye::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px; width: 6px; height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+    }
+
+    /* Sound wave animation */
+    .ultrasonic-wave {
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      border-bottom: 2px dashed rgba(56, 189, 248, 0.6);
+      transition: height 0.1s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bottle-body {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 220px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px 12px 30px 30px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(4px);
+      overflow: hidden;
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .bottle-neck {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 15px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .saline-fluid {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.6) 0%, rgba(14, 165, 233, 0.8) 100%);
+      transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    }
+
+    .saline-fluid.warning-fluid {
+      background: linear-gradient(180deg, rgba(248, 113, 113, 0.7) 0%, rgba(225, 29, 72, 0.85) 100%);
+      box-shadow: 0 0 20px rgba(248, 113, 113, 0.6);
+    }
+
+    .fluid-meniscus {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+    }
+
+    /* Measuring Ruler */
+    .bottle-ruler {
+      position: absolute;
+      right: -45px;
+      top: 0;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      border-left: 1px dashed rgba(255, 255, 255, 0.2);
+      padding-left: 6px;
+    }
+
+    /* Simulation Dashboard & Controls */
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .control-card {
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .sim-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #1e293b;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .sim-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--primary);
+      transition: transform 0.1s ease;
+    }
+
+    .sim-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Simulated LCD Display */
+    .lcd-display {
+      background: #0f2310;
+      border: 3px solid #1e3a1e;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-family: 'Fira Code', monospace;
+      color: #33ff33;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8), 0 0 10px rgba(51, 255, 51, 0.15);
+    }
+
+    .lcd-line {
+      height: 1.2em;
+      letter-spacing: 0.05em;
+      font-size: 0.88rem;
+    }
+
+    .lcd-display.lcd-warning {
+      background: #2a0808;
+      border-color: #4a1212;
+      color: #ff4d4d;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 77, 77, 0.25);
+    }
+
+    /* Telegram simulated notification */
+    .telegram-sim {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 0.85rem;
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      opacity: 0.3;
+      transform: translateY(5px);
+      transition: all 0.3s ease;
+    }
+
+    .telegram-sim.active-alert {
+      opacity: 1;
+      transform: translateY(0);
+      border-left-color: var(--danger);
+      box-shadow: 0 5px 20px rgba(248, 113, 113, 0.25);
+    }
+
+    .tg-icon {
+      width: 32px;
+      height: 32px;
+      background: #0088cc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .tg-content {
+      font-size: 0.8rem;
+    }
+
+    .tg-title {
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 0.2rem;
+    }
+
+    .tg-body {
+      color: #e2e8f0;
+    }
+
+    .btn-preset-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .btn-preset {
+      flex: 1;
+      padding: 0.4rem 0.6rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-preset:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+    }
+
+    /* Problem -> Solution Dual Cards */
+    .ps-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .ps-box {
+      padding: 1.25rem;
+      border-radius: 16px;
+    }
+
+    .ps-problem {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .ps-problem h4 { color: var(--danger); font-size: 0.95rem; margin-bottom: 0.4rem; }
+
+    .ps-solution {
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+    .ps-solution h4 { color: var(--success); font-size: 0.95rem; margin-bottom: 0.4rem; }
+
+    .ps-box p { font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; }
+
+    /* Process Flow */
+    .process-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .pipeline-node {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      background: rgba(2, 6, 23, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+    }
+
+    .pipeline-node div {
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .node-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    /* Components Grid */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .comp-card {
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.85rem;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Wiring Diagrams */
+    .wiring-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .wiring-box {
+      background: rgba(2, 6, 23, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+
+    .wiring-box h4 {
+      font-size: 0.88rem;
+      color: #f1f5f9;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .pin-table th { text-align: left; color: var(--text-muted); padding-bottom: 0.4rem; }
+    .pin-table td { padding: 0.4rem 0; border-top: 1px solid rgba(255, 255, 255, 0.04); }
+
+    .badge-pin {
+      padding: 0.15rem 0.5rem;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--primary);
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+    }
+
+    /* Sleek Lists */
+    .sleek-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .sleek-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .sleek-list li::before {
+      content: "";
+      position: absolute;
+      left: 0.2rem;
+      top: 0.5rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    /* Code Block */
+    .code-wrapper {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 8, 17, 0.95);
+    }
+
+    .code-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .code-filename {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .btn-copy {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    pre[class*="language-"] {
+      margin: 0 !important;
+      padding: 1rem !important;
+      background: transparent !important;
+      max-height: 360px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    code[class*="language-"] {
+      font-family: 'Fira Code', monospace !important;
+      font-size: 0.78rem !important;
+      line-height: 1.45 !important;
+    }
+
+    /* Contact */
+    .contact-panel {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .contact-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      background: linear-gradient(135deg, #0284c7, #6366f1);
+      border-radius: 50px;
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 1.5rem 0 0.5rem 0;
+    }
+
+    /* Desktop Adjustments */
+    @media (min-width: 768px) {
+      .app-container { padding: 2.5rem 1.25rem; }
+      .glass-panel { border-radius: 24px; margin-bottom: 2rem; }
+      .panel-inner { padding: 2.25rem; }
+      .hero-panel { padding: 3.5rem 2rem 2.5rem 2rem; }
+      h1 { font-size: 3.2rem; }
+      .hero-subtitle { font-size: 1.1rem; margin-bottom: 2.5rem; }
+      .creators-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+      .creator-card { border-radius: 16px; padding: 1.25rem 1.5rem; }
+      .creator-card h3 { font-size: 0.85rem; }
+      .creator-card p { font-size: 0.92rem; }
+      .section-title { font-size: 1.3rem; margin-bottom: 1.25rem; }
+      .sim-container { grid-template-columns: 1fr 1fr; }
+      .ps-container { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+      .ps-box { padding: 1.5rem; border-radius: 18px; }
+      .ps-box p { font-size: 0.92rem; }
+      .process-pipeline { gap: 0.85rem; }
+      .pipeline-node { padding: 1rem 1.25rem; border-radius: 16px; gap: 1rem; }
+      .pipeline-node div { font-size: 0.92rem; }
+      .node-num { width: 36px; height: 36px; font-size: 0.9rem; }
+      .comp-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+      .comp-card { padding: 1rem; border-radius: 14px; font-size: 0.9rem; }
+      .wiring-layout { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+      .wiring-box { padding: 1.25rem; border-radius: 16px; }
+      .wiring-box h4 { font-size: 0.95rem; }
+      .pin-table { font-size: 0.85rem; }
+      .badge-pin { font-size: 0.78rem; }
+      .sleek-list li { font-size: 0.95rem; }
+      .code-filename { font-size: 0.85rem; }
+      .btn-copy { font-size: 0.78rem; padding: 0.45rem 0.9rem; }
+      pre[class*="language-"] { max-height: 480px; padding: 1.25rem !important; }
+      code[class*="language-"] { font-size: 0.85rem !important; }
+      .contact-panel { padding: 2.5rem 1.5rem; }
+      .contact-btn { font-size: 0.95rem; padding: 0.75rem 1.75rem; }
+      footer { font-size: 0.82rem; padding: 2rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL Background Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- Hero Header -->
+    <header class="glass-panel hero-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="status-pill">
+          <span class="pulse-dot"></span> Smart IoT Healthcare
+        </div>
+        <h1>Saline Sense</h1>
+        <p class="hero-subtitle">Automated, continuous, and safer saline level monitoring for modern medical facilities.</p>
+
+        <div class="creators-grid">
+          <div class="creator-card">
+            <h3>👥 Creators</h3>
+            <p><strong>Nilava Mandal</strong> & <strong>Rehan Ansari</strong></p>
+            <p class="meta">Class VIII • Sargachi Ramakrishna Mission High School (H.S.), Murshidabad, WB</p>
+          </div>
+          <div class="creator-card">
+            <h3>👨‍🏫 Project Supervisor</h3>
+            <p><strong>Respected Jahar Kumar Saha Sir</strong></p>
+            <p class="meta">Department of Physics</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- LIVE INTERACTIVE SIMULATION SECTION -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🧪</i> Interactive Hardware Simulation</div>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+          Adjust the fluid level slider to simulate real-time HC-SR04 ultrasonic distance measurements. When the measured distance reaches <strong>10.0 cm – 25.0 cm</strong>, the ESP32 triggers a visual warning on the 16x2 LCD and dispatches a Telegram alert.
+        </p>
+
+        <div class="sim-container">
+          <!-- Simulation Stage (Bottle & Sensor) -->
+          <div class="sim-stage">
+            <div class="bottle-wrapper">
+              <!-- HC-SR04 Ultrasonic Sensor Visual -->
+              <div class="ultrasonic-sensor">
+                <div class="sensor-eye"></div>
+                <div class="sensor-eye"></div>
+              </div>
+              <div class="ultrasonic-wave" id="sim-wave"></div>
+
+              <!-- Saline Container -->
+              <div class="bottle-neck"></div>
+              <div class="bottle-body">
+                <div class="saline-fluid" id="sim-fluid">
+                  <div class="fluid-meniscus"></div>
+                </div>
+              </div>
+
+              <!-- Distance Marker Ruler -->
+              <div class="bottle-ruler">
+                <span>2.0 cm (Full)</span>
+                <span>10.0 cm (Limit)</span>
+                <span>25.0 cm (Empty)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulation Controls & Outputs -->
+          <div class="sim-controls">
+            <!-- Fluid Control Card -->
+            <div class="control-card">
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Fluid Level Control</span>
+                  <span id="dist-display" style="color: var(--primary); font-family: 'Fira Code', monospace;">Dist: 2.0 cm</span>
+                </div>
+                <!-- Range slider representing 2cm (full) to 25cm (empty) -->
+                <input type="range" min="2" max="25" value="2" step="0.5" class="sim-slider" id="fluid-range">
+                
+                <div class="btn-preset-group">
+                  <button class="btn-preset" onclick="setFluidLevel(2.0)">Full (2cm)</button>
+                  <button class="btn-preset" onclick="setFluidLevel(9.5)">Normal (9.5cm)</button>
+                  <button class="btn-preset" onclick="setFluidLevel(12.0)" style="border-color: rgba(248,113,113,0.4);">Warning (12cm)</button>
+                  <button class="btn-preset" onclick="setFluidLevel(25.0)" style="border-color: rgba(248,113,113,0.6);">Empty (25cm)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated 16x2 I2C LCD Output -->
+            <div class="control-card">
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">
+                📟 Onboard 16x2 LCD Output
+              </div>
+              <div class="lcd-display" id="lcd-screen">
+                <div class="lcd-line" id="lcd-line-1">Dist: 2.0 cm</div>
+                <div class="lcd-line" id="lcd-line-2">Status: Normal</div>
+              </div>
+            </div>
+
+            <!-- Simulated Telegram Alert Notification -->
+            <div class="telegram-sim" id="telegram-card">
+              <div class="tg-icon">✈️</div>
+              <div class="tg-content">
+                <div class="tg-title">Telegram Bot Notification</div>
+                <div class="tg-body" id="tg-text">System Monitoring Normal...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem vs Solution -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>⭐</i> Problem vs. Solution</div>
+        <div class="ps-container">
+          <div class="ps-box ps-problem">
+            <h4>❌ The Problem</h4>
+            <p>Manual checking of saline bottles requires constant nurse vigilance. Missed empty bottles pose severe health risks due to backflow or air embolisms.</p>
+          </div>
+          <div class="ps-box ps-solution">
+            <h4>✅ The Solution</h4>
+            <p>Saline Sense automates fluid tracking with high-accuracy ultrasonic distance measurements, broadcasting immediate alerts to nursing stations via Telegram.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🎯</i> Mission & Objective</div>
+        <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.6;">
+          In high-volume clinical settings, healthcare staff manage multiple patients simultaneously. Our system automates routine monitoring, eliminating manual error and giving nurses peace of mind with real-time digital status updates.
+        </p>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🔬</i> How It Works</div>
+        <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.6;">
+          An HC-SR04 ultrasonic sensor situated above the bottle measures sound impulse reflections from the fluid surface. The onboard ESP32 processes distance trends. When fluid depth passes the critical threshold (&gt;10 cm distance to fluid up to 25 cm max limit), visual warnings trigger on the I2C LCD screen, and an encrypted Telegram HTTP alert is dispatched over Wi-Fi.
+        </p>
+      </div>
+    </section>
+
+    <!-- Process Flow -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>⚙️</i> Operational Workflow</div>
+        <div class="process-pipeline">
+          <div class="pipeline-node">
+            <div class="node-num">01</div>
+            <div><strong>Fluid Depletion:</strong> Saline drops below safe operating levels.</div>
+          </div>
+          <div class="pipeline-node">
+            <div class="node-num">02</div>
+            <div><strong>Sensor Detection:</strong> Ultrasonic sensor reads distance shift.</div>
+          </div>
+          <div class="pipeline-node">
+            <div class="node-num">03</div>
+            <div><strong>ESP32 Processing:</strong> Microcontroller executes level threshold algorithm.</div>
+          </div>
+          <div class="pipeline-node">
+            <div class="node-num">04</div>
+            <div><strong>Local Alerting:</strong> 16×2 LCD renders immediate status shift.</div>
+          </div>
+          <div class="pipeline-node">
+            <div class="node-num">05</div>
+            <div><strong>Cloud Notification:</strong> Automated message dispatches to Telegram bot.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hardware Components -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🔧</i> Hardware Components</div>
+        <div class="comp-grid">
+          <div class="comp-card">⚡ ESP32 Board</div>
+          <div class="comp-card">📡 Ultrasonic Sensor</div>
+          <div class="comp-card">📟 16×2 I2C LCD</div>
+          <div class="comp-card">🧪 Saline Container</div>
+          <div class="comp-card">🔌 Jumper Wires</div>
+          <div class="comp-card">🔋 Power Adapter</div>
+          <div class="comp-card">📶 Wi-Fi Module</div>
+          <div class="comp-card">💬 Telegram Bot API</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wiring Diagram -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🔌</i> Circuit Connections</div>
+        <div class="wiring-layout">
+          <div class="wiring-box">
+            <h4>HC-SR04 Ultrasonic Sensor</h4>
+            <table class="pin-table">
+              <thead><tr><th>Sensor Pin</th><th>ESP32 GPIO</th></tr></thead>
+              <tbody>
+                <tr><td>VCC</td><td><span class="badge-pin">5V / VIN</span></td></tr>
+                <tr><td>GND</td><td><span class="badge-pin">GND</span></td></tr>
+                <tr><td>TRIG</td><td><span class="badge-pin">GPIO 4</span></td></tr>
+                <tr><td>ECHO</td><td><span class="badge-pin">GPIO 14</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="wiring-box">
+            <h4>16x2 I2C LCD Display</h4>
+            <table class="pin-table">
+              <thead><tr><th>LCD Pin</th><th>ESP32 GPIO</th></tr></thead>
+              <tbody>
+                <tr><td>VCC</td><td><span class="badge-pin">5V / VIN</span></td></tr>
+                <tr><td>GND</td><td><span class="badge-pin">GND</span></td></tr>
+                <tr><td>SDA</td><td><span class="badge-pin">GPIO 2</span></td></tr>
+                <tr><td>SCL</td><td><span class="badge-pin">GPIO 15</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Advantages -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>💡</i> Key Advantages</div>
+        <ul class="sleek-list">
+          <li>Continuous real-time fluid depth telemetry.</li>
+          <li>Early warning dispatching to stop dangerous back-drips.</li>
+          <li>Minimizes physical ward walk-through frequency for medical personnel.</li>
+          <li>Ultra-low execution cost and easily scalable architecture.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Future Scope -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>🚀</i> Future Scope</div>
+        <ul class="sleek-list">
+          <li>Native mobile apps with push notification support.</li>
+          <li>Centralized multi-bed nursing console dashboard.</li>
+          <li>Machine learning telemetry predicting exact time-to-empty.</li>
+          <li>Integration with hospital electronic health record systems.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Source Code -->
+    <section class="glass-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title"><i>💻</i> Source Code (ESP32 C++)</div>
+        <div class="code-wrapper">
+          <div class="code-top-bar">
+            <span class="code-filename">Saline_Sense.ino</span>
+            <button class="btn-copy" onclick="copyCode()">Copy Code</button>
+          </div>
+          <pre><code class="language-cpp" id="code-block">#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+
+const char* WIFI_SSID = "SRKMHS";
+const char* WIFI_PASS = "Srkmhs1900@#";
+const char* BOT_TOKEN = "8603203909:AAF6l2a0C_xP2f5lrZ1KClGio2xQeb1liCE";
+const char* CHAT_ID = "8709939894";
+
+const int TRIG = 4;
+const int ECHO = 14;
+const int SDA_PIN = 2;
+const int SCL_PIN = 15;
+
+const float LOW_DISTANCE = 10.0;
+const int DEBOUNCE = 3;
+
+int lowCount = 0;
+bool alertSent = false;
+bool wasLow = false;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(SDA_PIN, SCL_PIN);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Saline Sense");
+  lcd.setCursor(0, 1);
+  lcd.print("Initializing...");
+
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+
+  connectWiFi();
+  
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("System Ready");
+  delay(1500);
+}
+
+void loop() {
+  float distance = getDistance();
+  
+  if (distance > 0) {
+    lcd.setCursor(0, 0);
+    lcd.print("Dist: ");
+    lcd.print(distance, 1);
+    lcd.print(" cm    ");
+
+    if (distance >= LOW_DISTANCE) {
+      lowCount++;
+      lcd.setCursor(0, 1);
+      lcd.print("Status: WARNING ");
+      
+      if (lowCount >= DEBOUNCE && !alertSent) {
+        alertSent = true;
+        wasLow = true;
+        lcd.setCursor(0, 1);
+        lcd.print("Sending Alert! ");
+        sendTelegram(distance);
+      }
+    } else {
+      lowCount = 0;
+      alertSent = false;
+      lcd.setCursor(0, 1);
+      lcd.print("Status: Normal  ");
+    }
+  }
+  delay(500);
+}
+
+float getDistance() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+  
+  long duration = pulseIn(ECHO, HIGH, 30000);
+  if (duration == 0) return -1;
+  float cm = duration * 0.0343 / 2;
+  return (cm > 400 || cm < 2) ? -1 : cm;
+}
+
+void connectWiFi() {
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  int tries = 0;
+  while (WiFi.status() != WL_CONNECTED && tries < 20) {
+    delay(500);
+    tries++;
+  }
+}
+
+bool sendTelegram(float distance) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  HTTPClient http;
+  String msg = "SALINE ALERT: Fluid distance at " + String(distance, 1) + " cm!";
+  String url = "https://api.telegram.org/bot" + String(BOT_TOKEN) + "/sendMessage?chat_id=" + String(CHAT_ID) + "&text=" + msg;
+  http.begin(url);
+  int code = http.GET();
+  http.end();
+  return (code == 200);
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="glass-panel contact-panel" data-tilt>
+      <div class="panel-inner">
+        <div class="section-title" style="justify-content: center;"><i>👨‍💻</i> Direct Contact</div>
+        <p style="color: var(--text-muted); font-size: 0.88rem;">Have questions regarding the Saline Sense architecture?</p>
+        <a href="mailto:mandalnilava4@gmail.com" class="contact-btn">✉️ mandalnilava4@gmail.com</a>
+      </div>
+    </section>
+
+    <footer>
+      Saline Sense • Built by Nilava Mandal & Rehan Ansari
+    </footer>
+
+  </div>
+
+  <!-- Syntax Highlighting Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+
+  <script>
+    // --- 1. Simulation Logic ---
+    const fluidRange = document.getElementById('fluid-range');
+    const simFluid = document.getElementById('sim-fluid');
+    const simWave = document.getElementById('sim-wave');
+    const distDisplay = document.getElementById('dist-display');
+    const lcdScreen = document.getElementById('lcd-screen');
+    const lcdLine1 = document.getElementById('lcd-line-1');
+    const lcdLine2 = document.getElementById('lcd-line-2');
+    const telegramCard = document.getElementById('telegram-card');
+    const tgText = document.getElementById('tg-text');
+
+    function updateSimulation(val) {
+      const distance = parseFloat(val);
+      
+      // Update Slider Label
+      distDisplay.innerText = `Dist: ${distance.toFixed(1)} cm`;
+      
+      // Calculate fluid height percentage (2cm dist = 100% full, 25cm dist = 0% full)
+      const maxDist = 25.0;
+      const minDist = 2.0;
+      const fillPercentage = Math.max(0, Math.min(100, ((maxDist - distance) / (maxDist - minDist)) * 100));
+      
+      simFluid.style.height = `${fillPercentage}%`;
+
+      // Update Ultrasonic Sound Wave Visual height
+      const waveHeight = Math.max(10, Math.min(200, (100 - fillPercentage) * 2.1));
+      simWave.style.height = `${waveHeight}px`;
+
+      // LCD Display Updates
+      lcdLine1.innerText = `Dist: ${distance.toFixed(1)} cm`;
+
+      // Threshold Logic (Warning triggered between 10cm and 25cm)
+      if (distance >= 10.0) {
+        simFluid.classList.add('warning-fluid');
+        lcdScreen.classList.add('lcd-warning');
+        lcdLine2.innerText = `Status: WARNING`;
+        
+        // Telegram Alert Activation
+        telegramCard.classList.add('active-alert');
+        tgText.innerHTML = `⚠️ <strong>SALINE ALERT:</strong> Fluid distance at <strong>${distance.toFixed(1)} cm</strong>! Please replace bottle.`;
+      } else {
+        simFluid.classList.remove('warning-fluid');
+        lcdScreen.classList.remove('lcd-warning');
+        lcdLine2.innerText = `Status: Normal`;
+        
+        // Telegram Alert Reset
+        telegramCard.classList.remove('active-alert');
+        tgText.innerText = `System Monitoring Normal...`;
+      }
+    }
+
+    function setFluidLevel(val) {
+      fluidRange.value = val;
+      updateSimulation(val);
+    }
+
+    fluidRange.addEventListener('input', (e) => {
+      updateSimulation(e.target.value);
+    });
+
+    // Initialize Simulation
+    updateSimulation(fluidRange.value);
+
+    // --- 2. Mobile-Optimized Three.js 3D Background ---
+    const isMobile = window.innerWidth <= 768;
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x03060d, isMobile ? 0.02 : 0.015);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, isMobile ? 40 : 35);
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobile });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+
+    // Diverse Geometries
+    const geometries = [
+      new THREE.IcosahedronGeometry(1.6, 0),
+      new THREE.TorusGeometry(1.8, 0.4, 12, 24),
+      new THREE.OctahedronGeometry(1.8, 0),
+      new THREE.TetrahedronGeometry(1.8, 0),
+      new THREE.DodecahedronGeometry(1.4, 0)
+    ];
+
+    const materials = [
+      new THREE.MeshStandardMaterial({ color: 0x38bdf8, wireframe: true, transparent: true, opacity: 0.3 }),
+      new THREE.MeshStandardMaterial({ color: 0x818cf8, wireframe: true, transparent: true, opacity: 0.25 }),
+      new THREE.MeshStandardMaterial({ color: 0x0284c7, wireframe: true, transparent: true, opacity: 0.2 }),
+      new THREE.MeshStandardMaterial({ color: 0x34d399, wireframe: true, transparent: true, opacity: 0.22 }),
+      new THREE.MeshStandardMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.28 })
+    ];
+
+    const meshCount = isMobile ? 35 : 60;
+    const meshes = [];
+
+    for (let i = 0; i < meshCount; i++) {
+      const geom = geometries[i % geometries.length];
+      const mat = materials[i % materials.length];
+      const mesh = new THREE.Mesh(geom, mat);
+
+      mesh.position.x = (Math.random() - 0.5) * (isMobile ? 50 : 80);
+      mesh.position.y = (Math.random() - 0.5) * (isMobile ? 180 : 160); 
+      mesh.position.z = (Math.random() - 0.5) * (isMobile ? 40 : 60);
+
+      mesh.rotation.x = Math.random() * Math.PI;
+      mesh.rotation.y = Math.random() * Math.PI;
+
+      const scale = Math.random() * 0.8 + 0.3;
+      mesh.scale.set(scale, scale, scale);
+
+      scene.add(mesh);
+      meshes.push({
+        mesh: mesh,
+        rotSpeedX: (Math.random() - 0.5) * 0.008,
+        rotSpeedY: (Math.random() - 0.5) * 0.008,
+        initialY: mesh.position.y
+      });
+    }
+
+    // Floating Particles
+    const particleCount = isMobile ? 350 : 800;
+    const particleGeometry = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePositions[i] = (Math.random() - 0.5) * 100;
+      particlePositions[i + 1] = (Math.random() - 0.5) * 200;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 60;
+    }
+
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0x38bdf8,
+      size: isMobile ? 0.35 : 0.4,
+      transparent: true,
+      opacity: 0.45
+    });
+    const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particleSystem);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0x38bdf8, 2.5, 120);
+    pointLight.position.set(15, 25, 25);
+    scene.add(pointLight);
+
+    // Scroll & Motion Trackers
+    let scrollY = 0;
+    let targetScrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+    }, { passive: true });
+
+    let mouseX = 0, mouseY = 0;
+    const handlePointerMove = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      mouseX = (clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+
+    // Render Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      scrollY += (targetScrollY - scrollY) * 0.08;
+
+      meshes.forEach((item, index) => {
+        item.mesh.rotation.x += item.rotSpeedX;
+        item.mesh.rotation.y += item.rotSpeedY;
+        item.mesh.position.y = item.initialY + (scrollY * 0.03) * ((index % 3) + 1) * 0.5;
+      });
+
+      camera.position.y = -scrollY * (isMobile ? 0.038 : 0.045);
+      camera.position.x += (mouseX * (isMobile ? 2 : 4) - camera.position.x) * 0.05;
+      camera.rotation.z = Math.sin(scrollY * 0.001) * 0.04;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // --- 3. 3D Parallax Tilt Effect for Cards ---
+    if (!isMobile) {
+      const cards = document.querySelectorAll('[data-tilt]');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -4;
+          const rotateY = ((x - centerX) / centerX) * 4;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+      });
+    }
+
+    // --- 4. Clipboard Helper ---
+    function copyCode() {
+      const code = document.getElementById('code-block').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = 'Copy Code'; }, 2000);
+      });
+    }
+  </script>
+</body>
 </html>
